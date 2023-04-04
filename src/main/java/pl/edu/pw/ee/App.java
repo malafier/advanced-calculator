@@ -14,19 +14,22 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("calculator2.fxml"));
+        scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.setTitle("Advanced Calculator");
+        stage.setResizable(false); 
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    /*static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
         return fxmlLoader.load();
-    }
+    }*/
 
     public static void main(String[] args) {
         launch();
