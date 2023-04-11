@@ -1,11 +1,38 @@
 package pl.edu.pw.ee.calculations;
 
-public interface Calculations {// FIXME: sprawdzić czy to wgl ma sens
-    public String add(String a, String b); 
+public class Calculations {
+    public Calculations(String input) {
+        if(!validateInput(input)) {
+            // TODO:implement exception
+        }
+        //TODO: implement
+    }
 
-    public String substract(String a, String b); 
+    public String getAnswer() {
+        return null; //TODO: implement
+    }
 
-    public String multiply(String a, String b); 
+    private boolean validateInput(String input) {
+        int leftPar = input.chars().filter(c -> c == '(').sum();
+        int rightPar = input.chars().filter(c -> c == ')').sum();
 
-    public String divide(String a, String b); 
+        if(rightPar > leftPar) {
+            return false; 
+        } else if(rightPar < leftPar) {
+            StringBuilder sb = new StringBuilder(input); 
+            for(int i=0; i < (leftPar - rightPar); i++) {
+                sb.append(')');
+            }
+            input = sb.toString();
+        }
+
+        String operands = "+-×÷."; 
+        for(int i=1; i < input.length()-1; i++) {
+            if(operands.contains(Character.toString(input.charAt(i))) && (operands.contains(Character.toString(input.charAt(i-1))) || operands.contains(Character.toString(input.charAt(i+1))))) {
+                return false; 
+            }
+        }
+
+        return true;
+    }
 }
