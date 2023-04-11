@@ -21,10 +21,24 @@ public class Controller {
     }
 
     @FXML
+    private void clickRootBtn() {
+        Text text = new Text("√("); 
+        text.setFont(Font.font("Helvetica", 32));
+        txtFlow.getChildren().add(text); 
+        txtFlow.layout();
+    }
+
+    @FXML
     private void clickDelBtn() {
         int idOfLastTextNode = txtFlow.getChildren().size() - 1; 
         if(idOfLastTextNode >= 0) {
             txtFlow.getChildren().remove(idOfLastTextNode); 
         }
+    }
+
+    @FXML
+    private void clickClearBtn() {
+        txtFlow.getChildren().clear();
+        txtFlow.layout();
     }
 }
