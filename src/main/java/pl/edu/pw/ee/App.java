@@ -13,7 +13,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("calaulator2.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("calculator.fxml"));
         scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setTitle("Advanced Calculator");
