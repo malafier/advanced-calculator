@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import pl.edu.pw.ee.calculations.Calculations;
 
 public class Controller {
     @FXML
@@ -36,7 +37,16 @@ public class Controller {
 
     @FXML
     private void clickEqualsBtn() {
-        //TODO: implement
+        StringBuilder equasion = new StringBuilder(); 
+        for(int i=0; i < txtFlow.getChildren().size(); i++) {
+            equasion.append(((Text)(txtFlow.getChildren().get(i))).getText());
+        }
+        String result = Calculations.getAnswer(equasion.toString());
+
+        Text text = new Text("\n=" + result); 
+        text.setFont(Font.font("Helvetica", 32));
+        txtFlow.getChildren().add(text); 
+        txtFlow.layout();
     }
 
     @FXML
