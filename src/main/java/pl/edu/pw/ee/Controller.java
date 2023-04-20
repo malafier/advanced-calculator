@@ -41,7 +41,7 @@ public class Controller {
 
     @FXML
     private void clickOperandBtn(ActionEvent event) {
-        String invalidNeighbour = "+-×÷^(.";
+        final String invalidNeighbour = "+-×÷^(.";
         int idOfLastTextNode = txtFlow.getChildren().size() - 1; 
         if(idOfLastTextNode < 0) {
             return;
