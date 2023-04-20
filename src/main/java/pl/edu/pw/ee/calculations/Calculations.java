@@ -11,6 +11,7 @@ public class Calculations {
         if(!validateInput(input)) {
             throw new IllegalArgumentException();
         }
+        input = input.replace("(-", "(0-");
         Stack<String> reversePolish = shuntingYardParser(input);
         return calculate(reversePolish).toString();
     }
@@ -33,11 +34,12 @@ public class Calculations {
             if(isNumber(token)) {
                 outputStack.push(token); 
             } else {
-                if(token.equals("(")) {
-                    while(operatorStack.peek().equals(")")) {
+                if(token.equals(")")) {
+                    while(!operatorStack.peek().equals("(")) {
                         outputStack.push(operatorStack.pop()); 
                     }
-                } else if(token.equals(")")) {
+                    operatorStack.pop();
+                } else if(token.equals("(")) {
                     operatorStack.push(token);
                 } else if(operatorStack.empty() || operatorStack.peek().equals("(") || operatorPrecedence.get(operatorStack.peek()) < operatorPrecedence.get(token)) {
                     operatorStack.push(token);
@@ -66,6 +68,7 @@ public class Calculations {
             } else {
                 ComplexNum second = helpingStack.pop(); 
                 ComplexNum first = helpingStack.empty() ? new ComplexNum(0, 0) : helpingStack.pop(); 
+                System.err.println("  > " + first + " " + second + " " + popped);
                 helpingStack.push(first.performOperation(second, popped));
             }
         }
@@ -86,18 +89,22 @@ public class Calculations {
     }
 
     private static boolean validateInput(String input) {
-        int leftPar = input.chars().filter(c -> c == '(').sum();
-        int rightPar = input.chars().filter(c -> c == ')').sum();
+        int leftPar = (int) input.chars().filter(c -> c == '(').count();
+        int rightPar = (int) input.chars().filter(c -> c == ')').count();
+        System.err.println(input + ": " + leftPar + " " + rightPar);
 
+        if(leftPar == rightPar) {
+            return true;
+        }
         if(rightPar > leftPar) {
             return false; 
-        } else if(rightPar < leftPar) {
-            StringBuilder sb = new StringBuilder(input); 
-            for(int i=0; i < (leftPar - rightPar); i++) {
-                sb.append(')');
-            }
-            input = sb.toString();
+        } 
+
+        StringBuilder sb = new StringBuilder(input); 
+        for(int i=0; i < (leftPar - rightPar); i++) {
+            sb.append(')');
         }
+        input = sb.toString();
 
         return true;
     }

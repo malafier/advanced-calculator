@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.calculations;
 
+import java.util.StringTokenizer;
+
 public class ComplexNum {
     private double real; 
     private double imaginary; 
@@ -10,29 +12,38 @@ public class ComplexNum {
     }
 
     public ComplexNum(String s) {
-        if(s.contains("i")) {
-            real = Double.parseDouble(s); 
-            imaginary = 0;
-        } else {
+        String[] parts = s.split("(?=[+-])"); // split string at + or -
+    
+        if (parts.length == 1) { // only real or imaginary part
+            parseSinglePart(parts[0]);
+        } else if (parts.length == 2) { // real and imaginary part
+            parseRealAndImaginary(parts[0], parts[1]);
+        } 
+    }
+    
+    private void parseSinglePart(String s) {
+        if (s.endsWith("i")) { // imaginary 
             real = 0;
-            imaginary = Double.parseDouble(s.substring(0, s.lastIndexOf(s)-1));
+            imaginary = Double.parseDouble(s.substring(0, s.length() - 1));
+        } else { // real 
+            real = Double.parseDouble(s);
+            imaginary = 0;
         }
+    }
+    
+    private void parseRealAndImaginary(String realPart, String imaginaryPart) {
+        real = Double.parseDouble(realPart);
+        imaginary = Double.parseDouble(imaginaryPart.substring(0, imaginaryPart.length() - 1));
     }
 
     public ComplexNum performOperation(ComplexNum other, String operator) throws ArithmeticException {
         switch (operator) {
-            case "+":
-                return this.add(other);
-            case "-":
-                return this.substract(other);
-            case "×":
-                return this.multiply(other);
-            case "÷":
-                return this.divide(other);
-            case "^":
-                return this.powerOf(other);
-            default:
-                throw new ArithmeticException();
+            case "+": return this.add(other);
+            case "-": return this.substract(other);
+            case "×": return this.multiply(other);
+            case "÷": return this.divide(other);
+            case "^": return this.powerOf(other);
+            default: throw new ArithmeticException();
         }
     }
 
@@ -59,7 +70,7 @@ public class ComplexNum {
 
     public ComplexNum divide(ComplexNum other) throws ArithmeticException {
         if(other.real == 0 && other.imaginary == 0) {
-            throw new ArithmeticException("You can't divide by ZERO!"); 
+            throw new ArithmeticException("Division by zero!"); 
         }
 
         double otherLengthSquared = other.real * other.real + other.imaginary * other.imaginary; 
@@ -76,8 +87,8 @@ public class ComplexNum {
         }
 
         ComplexNum answer = new ComplexNum(1, 0); 
-        for(int i=1; i < other.real; i++) {
-            answer.multiply(this); 
+        for(int i=1; i <= other.real; i++) {
+            answer = answer.multiply(this); 
         }
 
         return answer;
@@ -85,6 +96,32 @@ public class ComplexNum {
 
     @Override
     public String toString() {
-        return real + "+" + imaginary + "i"; 
+        if(real == 0 && imaginary == 0) {
+            return "0";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (real != 0) {
+            if (real % 1 == 0) {
+                sb.append((int) real);
+            } else {
+                sb.append(real);
+            }
+        }
+
+        if (imaginary != 0) {
+            if (sb.length() > 0) {
+                sb.append(imaginary < 0 ? " - " : " + ");
+            }
+            double absImaginary = Math.abs(imaginary);
+            if (absImaginary % 1 == 0) {
+                sb.append((int) absImaginary);
+            } else {
+                sb.append(absImaginary);
+            }
+            sb.append("i");
+        }
+
+        return sb.toString();
     }
 }
