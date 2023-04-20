@@ -12,19 +12,23 @@ public class Calculations {
             throw new IllegalArgumentException();
         }
         input = input.replace("(-", "(0-");
+        input = input.replace("×", "*");
+        input = input.replace("÷", "/");
+        input = input.replace("𝑖", "i");
+
         Stack<String> reversePolish = shuntingYardParser(input);
         return calculate(reversePolish).toString();
     }
 
     private static Stack<String> shuntingYardParser(String input) {
-        StringTokenizer tokens = new StringTokenizer(input, "+-×÷()^", true);
+        StringTokenizer tokens = new StringTokenizer(input, "+-*/()^", true);
         Stack<String> operatorStack = new Stack<String>();
         Stack<String> outputStack = new Stack<String>(); 
 
         Map<String, Integer> operatorPrecedence = new TreeMap<>(); 
         operatorPrecedence.put("^", 4);
-        operatorPrecedence.put("×", 3);
-        operatorPrecedence.put("÷", 3);
+        operatorPrecedence.put("*", 3);
+        operatorPrecedence.put("/", 3);
         operatorPrecedence.put("+", 2);
         operatorPrecedence.put("-", 2);
 
@@ -68,7 +72,6 @@ public class Calculations {
             } else {
                 ComplexNum second = helpingStack.pop(); 
                 ComplexNum first = helpingStack.empty() ? new ComplexNum(0, 0) : helpingStack.pop(); 
-                System.err.println("  > " + first + " " + second + " " + popped);
                 helpingStack.push(first.performOperation(second, popped));
             }
         }
@@ -91,7 +94,6 @@ public class Calculations {
     private static boolean validateInput(String input) {
         int leftPar = (int) input.chars().filter(c -> c == '(').count();
         int rightPar = (int) input.chars().filter(c -> c == ')').count();
-        System.err.println(input + ": " + leftPar + " " + rightPar);
 
         if(leftPar == rightPar) {
             return true;

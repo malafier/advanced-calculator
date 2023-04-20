@@ -1,7 +1,5 @@
 package pl.edu.pw.ee.calculations;
 
-import java.util.StringTokenizer;
-
 public class ComplexNum {
     private double real; 
     private double imaginary; 
@@ -40,8 +38,8 @@ public class ComplexNum {
         switch (operator) {
             case "+": return this.add(other);
             case "-": return this.substract(other);
-            case "×": return this.multiply(other);
-            case "÷": return this.divide(other);
+            case "*": return this.multiply(other);
+            case "/": return this.divide(other);
             case "^": return this.powerOf(other);
             default: throw new ArithmeticException();
         }

@@ -8,7 +8,7 @@ public class CalculationsTest {
 
     @Test
     public void simpleArithmeticsTest() {
-        String equasion_1 = "2+3", equasion_2 = "3+3+4-5", equasion_3 = "8+2-15", equasion_4 = "3×4×2", equasion_5 = "12÷2", equasion_6 = "2^5"; 
+        String equasion_1 = "2+3", equasion_2 = "3+3+4-5", equasion_3 = "8+2-15", equasion_4 = "12*2", equasion_5 = "12/2", equasion_6 = "2^5"; 
         String result_1 = "5", result_2 = "5", result_3 = "-5", result_4 = "24", result_5 = "6", result_6 = "32";
 
         assertEquals(result_1, Calculations.getAnswer(equasion_1));
@@ -21,7 +21,7 @@ public class CalculationsTest {
 
     @Test
     public void negativeNumbersTest() {
-        String equasion_1 = "-4+9", equasion_2 = "3+3+(-5)", equasion_3 = "2×(-15)", equasion_4 = "-12÷2";
+        String equasion_1 = "-4+9", equasion_2 = "3+3+(-5)", equasion_3 = "2*(-15)", equasion_4 = "-12/2";
         String result_1 = "5", result_2 = "1", result_3 = "-30", result_4 = "-6";
 
         assertEquals(result_1, Calculations.getAnswer(equasion_1));
