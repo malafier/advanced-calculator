@@ -57,7 +57,7 @@ public class Controller {
             return;
         }
         String lastSign = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
-        if(invalidNeighbour.contains(lastSign)) {
+        if(invalidNeighbour.contains(lastSign) && !(((Button)event.getSource()).getText().equals("-") && lastSign.equals("("))) {
             return; 
         }
         clickTextBtn(event);
