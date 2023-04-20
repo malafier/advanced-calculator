@@ -12,17 +12,9 @@ public class Controller {
     TextFlow txtFlow;
 
     @FXML
-    private void clickTextBtn(ActionEvent event) {
+    private void clickTextBtn(ActionEvent event) {//FIXME: add ')' exception
         Button buttonClicked = (Button) event.getSource(); 
         Text text = new Text(buttonClicked.getText()); 
-        text.setFont(Font.font("Helvetica", 32));
-        txtFlow.getChildren().add(text); 
-        txtFlow.layout();
-    }
-
-    @FXML
-    private void clickRootBtn() {
-        Text text = new Text("√("); 
         text.setFont(Font.font("Helvetica", 32));
         txtFlow.getChildren().add(text); 
         txtFlow.layout();
@@ -40,5 +32,53 @@ public class Controller {
     private void clickClearBtn() {
         txtFlow.getChildren().clear();
         txtFlow.layout();
+    }
+
+    @FXML
+    private void clickEqualsBtn() {
+        //TODO: implement
+    }
+
+    @FXML
+    private void clickOperandBtn(ActionEvent event) {
+        String invalidNeighbour = "+-×÷^(.";
+        int idOfLastTextNode = txtFlow.getChildren().size() - 1; 
+        if(idOfLastTextNode < 0) {
+            return;
+        }
+        String lastSign = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
+        if(invalidNeighbour.contains(lastSign)) {
+            return; 
+        }
+        clickTextBtn(event);
+    }
+
+    @FXML
+    private void clickDotBtn(ActionEvent event) {
+        final String invalidNeighbour = "+-×÷^().", endoOfNumberSign = "+-×÷^(";
+        boolean hasDotFlag = false;
+        int idOfLastTextNode = txtFlow.getChildren().size() - 1;
+
+        String neighbour = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
+        if(idOfLastTextNode < 0 || invalidNeighbour.contains(neighbour)) {
+            return;
+        }
+
+        int i=idOfLastTextNode; 
+        String signToChceck = ((Text)(txtFlow.getChildren().get(i))).getText(); 
+        while(i >= 0 && !endoOfNumberSign.contains(signToChceck)) {
+            signToChceck = ((Text)(txtFlow.getChildren().get(i))).getText(); 
+            if(signToChceck.equals(".")) {
+                hasDotFlag = true; 
+                break;
+            }
+            i--;
+        }
+
+        if(hasDotFlag) {
+            return;
+        }
+
+        clickTextBtn(event);
     }
 }

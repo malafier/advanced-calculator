@@ -51,12 +51,12 @@
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnPlus" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickTextBtn" text="+" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                  <Button fx:id="btnPlus" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickOperandBtn" text="+" GridPane.columnIndex="3" GridPane.rowIndex="4">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnMinus" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickTextBtn" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                  <Button fx:id="btnMinus" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickOperandBtn" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -96,7 +96,7 @@
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnComma" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickTextBtn" text="." GridPane.columnIndex="2" GridPane.rowIndex="5">
+                  <Button fx:id="btnComma" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickDotBtn" text="." GridPane.columnIndex="2" GridPane.rowIndex="5">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -106,12 +106,12 @@
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnTimes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickTextBtn" text="×" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <Button fx:id="btnTimes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickOperandBtn" text="×" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnDiv" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickTextBtn" text="÷" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <Button fx:id="btnDiv" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickOperandBtn" text="÷" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -121,7 +121,7 @@
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnRoot" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRootBtn" text="√" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="btnPower" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickOperandBtn" text="^" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font size="24.0" />
                      </font>
