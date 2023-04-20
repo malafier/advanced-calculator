@@ -1,6 +1,6 @@
 package pl.edu.pw.ee.calculations;
 
-public class ComplexNum extends Number { // extends Number
+public class ComplexNum {
     private double real; 
     private double imaginary; 
 
@@ -10,7 +10,30 @@ public class ComplexNum extends Number { // extends Number
     }
 
     public ComplexNum(String s) {
-        // TODO: zaimplementować, xd
+        if(s.contains("i")) {
+            real = Double.parseDouble(s); 
+            imaginary = 0;
+        } else {
+            real = 0;
+            imaginary = Double.parseDouble(s.substring(0, s.lastIndexOf(s)-1));
+        }
+    }
+
+    public ComplexNum performOperation(ComplexNum other, String operator) throws ArithmeticException {
+        switch (operator) {
+            case "+":
+                return this.add(other);
+            case "-":
+                return this.substract(other);
+            case "×":
+                return this.multiply(other);
+            case "÷":
+                return this.divide(other);
+            case "^":
+                return this.powerOf(other);
+            default:
+                throw new ArithmeticException();
+        }
     }
 
     public ComplexNum add(ComplexNum other) {
@@ -34,9 +57,9 @@ public class ComplexNum extends Number { // extends Number
         return new ComplexNum(resultReal, resultImaginary); 
     }
 
-    public ComplexNum divide(ComplexNum other) {
+    public ComplexNum divide(ComplexNum other) throws ArithmeticException {
         if(other.real == 0 && other.imaginary == 0) {
-            throw new IllegalArgumentException("You can't divide by ZERO!"); 
+            throw new ArithmeticException("You can't divide by ZERO!"); 
         }
 
         double otherLengthSquared = other.real * other.real + other.imaginary * other.imaginary; 
@@ -47,32 +70,21 @@ public class ComplexNum extends Number { // extends Number
         return new ComplexNum(resultReal, resultImaginary); 
     }
 
+    public ComplexNum powerOf(ComplexNum other) throws ArithmeticException {
+        if(other.imaginary != 0 || other.real % 1 != 0) {//add rooting real numbers
+            throw new ArithmeticException();
+        }
+
+        ComplexNum answer = new ComplexNum(1, 0); 
+        for(int i=1; i < other.real; i++) {
+            answer.multiply(this); 
+        }
+
+        return answer;
+    }
+
     @Override
     public String toString() {
-        return real + " " + imaginary + "i"; 
-    }
-
-    @Override
-    public int intValue() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'intValue'");
-    }
-
-    @Override
-    public long longValue() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'longValue'");
-    }
-
-    @Override
-    public float floatValue() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floatValue'");
-    }
-
-    @Override
-    public double doubleValue() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'doubleValue'");
+        return real + "+" + imaginary + "i"; 
     }
 }
