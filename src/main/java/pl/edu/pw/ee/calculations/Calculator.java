@@ -17,7 +17,7 @@ public class Calculator {
         input = input.replace("𝑖", "i");
 
         Stack<String> reversePolish = shuntingYardParser(input);
-        return calculate(reversePolish).toString();
+        return calculate(reversePolish).toString().replace("i", "𝑖");
     }
 
     private static Stack<String> shuntingYardParser(String input) {
