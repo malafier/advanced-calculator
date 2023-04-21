@@ -7,18 +7,33 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import pl.edu.pw.ee.calculations.Calculator;
+import pl.edu.pw.ee.calculations.ComplexNumber;
 
 public class Controller {
     @FXML
     TextFlow txtFlow;
 
-    @FXML
-    private void clickTextBtn(ActionEvent event) {//FIXME: add ')' exception
+    private ComplexNumber memory;
+
+    private void buttonInput(ActionEvent event) {
         Button buttonClicked = (Button) event.getSource(); 
         Text text = new Text(buttonClicked.getText()); 
         text.setFont(Font.font("Helvetica", 32));
         txtFlow.getChildren().add(text); 
         txtFlow.layout();
+    }
+
+    @FXML
+    private void clickNumberBtn(ActionEvent event) {
+        final String invalidNeighbour = ")𝑖";
+        int idOfLastTextNode = txtFlow.getChildren().size() - 1;
+        if(idOfLastTextNode >= 0) {
+            String lastSign = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
+            if(invalidNeighbour.contains(lastSign)) {
+                return;
+            }
+        }
+        buttonInput(event);
     }
 
     @FXML
@@ -37,11 +52,16 @@ public class Controller {
 
     @FXML
     private void clickEqualsBtn() {
+        if(txtFlow.getChildren().size() - 1 < 0) {
+            return;
+        }
+
         StringBuilder equasion = new StringBuilder(); 
         for(int i=0; i < txtFlow.getChildren().size(); i++) {
             equasion.append(((Text)(txtFlow.getChildren().get(i))).getText());
         }
         String result = Calculator.getAnswer(equasion.toString());
+        memory = new ComplexNumber(result);
 
         Text text = new Text("\n=" + result); 
         text.setFont(Font.font("Helvetica", 32));
@@ -60,12 +80,12 @@ public class Controller {
         if(invalidNeighbour.contains(lastSign) && !(((Button)event.getSource()).getText().equals("-") && lastSign.equals("("))) {
             return; 
         }
-        clickTextBtn(event);
+        buttonInput(event);
     }
 
     @FXML
     private void clickDotBtn(ActionEvent event) {
-        final String invalidNeighbour = "+-×÷^().", endoOfNumberSign = "+-×÷^(";
+        final String invalidNeighbour = "+-×÷^()𝑖.", endoOfNumberSign = "+-×÷^(";
         boolean hasDotFlag = false;
         int idOfLastTextNode = txtFlow.getChildren().size() - 1;
 
@@ -89,6 +109,37 @@ public class Controller {
             return;
         }
 
-        clickTextBtn(event);
+        buttonInput(event);
+    }
+
+    @FXML
+    private void clickImgBtn(ActionEvent event) {
+        final String invalidNeighbour = "^)."; 
+        int idOfLastTextNode = txtFlow.getChildren().size() - 1;
+        if(idOfLastTextNode >= 0) {
+            String lastSign = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
+            if(invalidNeighbour.contains(lastSign)) {
+                return;
+            }
+        }
+        buttonInput(event);
+    }
+
+    @FXML
+    private void clickAnswerBtn(ActionEvent event) {
+        if(memory == null || memory.toString().equals("0")) {
+            return;
+        }
+
+        Text text = new Text(memory.toString()); 
+        text.setFont(Font.font("Helvetica", 32));
+        txtFlow.getChildren().add(text); 
+        txtFlow.layout();
+    }
+
+    @FXML
+    private void clickParenthisisBtn(ActionEvent event) {
+        buttonInput(event);
+        //TODO: finish
     }
 }
