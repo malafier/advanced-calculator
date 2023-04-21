@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class ComplexNumTest {
+public class ComplexNumberTest {
     @Test
     public void testAdd() {
-        ComplexNum add_1_1 = new ComplexNum(2, 0), add_1_2 = new ComplexNum(6.5, 0); 
-        ComplexNum add_2_1 = new ComplexNum(0, 4), add_2_2 = new ComplexNum(12, 0); 
-        ComplexNum add_3_1 = new ComplexNum(21.5, 4), add_3_2 = new ComplexNum(-15.16, -10.6); 
+        ComplexNumber add_1_1 = new ComplexNumber(2, 0), add_1_2 = new ComplexNumber(6.5, 0); 
+        ComplexNumber add_2_1 = new ComplexNumber(0, 4), add_2_2 = new ComplexNumber(12, 0); 
+        ComplexNumber add_3_1 = new ComplexNumber(21.5, 4), add_3_2 = new ComplexNumber(-15.16, -10.6); 
 
         String result_1 = "8.5", result_2 = "12 + 4i", result_3 = "6.34 - 6.6i";
 
@@ -45,10 +45,10 @@ public class ComplexNumTest {
 
     @Test
     public void testToString() {
-        ComplexNum testedNumOne = new ComplexNum(32, 15); 
-        ComplexNum testedNumTwo = new ComplexNum(32.15, -15.1212); 
-        ComplexNum testedNumThree = new ComplexNum(-32.15, 15.1212); 
-        ComplexNum testedNumFour = new ComplexNum(-32.15, -15.1212); 
+        ComplexNumber testedNumOne = new ComplexNumber(32, 15); 
+        ComplexNumber testedNumTwo = new ComplexNumber(32.15, -15.1212); 
+        ComplexNumber testedNumThree = new ComplexNumber(-32.15, 15.1212); 
+        ComplexNumber testedNumFour = new ComplexNumber(-32.15, -15.1212); 
 
         String resultOne = "32 + 15i";
         String resultTwo = "32.15 - 15.1212i";
