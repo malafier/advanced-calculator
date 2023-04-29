@@ -141,7 +141,7 @@
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnRightPar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickParenthisisBtn" text=")" GridPane.columnIndex="2">
+                  <Button fx:id="btnRightPar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickRightParenthisisBtn" text=")" GridPane.columnIndex="2">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -151,7 +151,7 @@
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnLeftPar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickParenthisisBtn" text="(" GridPane.columnIndex="1">
+                  <Button fx:id="btnLeftPar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickLeftParenthisisBtn" text="(" GridPane.columnIndex="1">
                      <font>
                         <Font size="24.0" />
                      </font>

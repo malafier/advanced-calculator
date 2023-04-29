@@ -60,7 +60,7 @@ public class ComplexNumber {
     }
 
     public ComplexNumber multiply(ComplexNumber other) {
-        double resultReal = this.real * other.real + this.imaginary * other.imaginary; 
+        double resultReal = this.real * other.real - this.imaginary * other.imaginary; 
         double resultImaginary = this.real * other.imaginary + other.real * this.imaginary; 
 
         return new ComplexNumber(resultReal, resultImaginary); 
@@ -109,7 +109,7 @@ public class ComplexNumber {
 
         if (imaginary != 0) {
             if (sb.length() > 0) {
-                sb.append(imaginary < 0 ? " - " : " + ");
+                sb.append(imaginary < 0 ? "-" : "+");
             }
             double absImaginary = Math.abs(imaginary);
             if (absImaginary % 1 == 0) {

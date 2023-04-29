@@ -15,32 +15,21 @@ public class Controller {
 
     private ComplexNumber memory;
 
-    private void buttonInput(ActionEvent event) {
-        Button buttonClicked = (Button) event.getSource(); 
-        Text text = new Text(buttonClicked.getText()); 
-        text.setFont(Font.font("Helvetica", 32));
-        txtFlow.getChildren().add(text); 
-        txtFlow.layout();
-    }
-
     @FXML
     private void clickNumberBtn(ActionEvent event) {
         final String invalidNeighbour = ")𝑖";
-        int idOfLastTextNode = txtFlow.getChildren().size() - 1;
-        if(idOfLastTextNode >= 0) {
-            String lastSign = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
-            if(invalidNeighbour.contains(lastSign)) {
+        if(ControlUtils.lastTextId(txtFlow) >= 0) {
+            if(invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
                 return;
             }
         }
-        buttonInput(event);
+        ControlUtils.buttonInput(event, txtFlow);
     }
 
     @FXML
     private void clickDelBtn() {
-        int idOfLastTextNode = txtFlow.getChildren().size() - 1; 
-        if(idOfLastTextNode >= 0) {
-            txtFlow.getChildren().remove(idOfLastTextNode); 
+        if(ControlUtils.lastTextId(txtFlow) >= 0) {
+            txtFlow.getChildren().remove(ControlUtils.lastTextId(txtFlow)); 
         }
     }
 
@@ -70,31 +59,28 @@ public class Controller {
     }
 
     @FXML
-    private void clickOperandBtn(ActionEvent event) {
+    private void clickOperandBtn(ActionEvent event) {//TODO: Ans
         final String invalidNeighbour = "+-×÷^(.";
-        int idOfLastTextNode = txtFlow.getChildren().size() - 1; 
-        if(idOfLastTextNode < 0) {
+        if(ControlUtils.lastTextId(txtFlow) < 0) {
             return;
         }
-        String lastSign = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
-        if(invalidNeighbour.contains(lastSign) && !(((Button)event.getSource()).getText().equals("-") && lastSign.equals("("))) {
+        boolean minusCanBeAfterLeftPar = !(((Button)event.getSource()).getText().equals("-") && ControlUtils.lastSign(txtFlow).equals("("));
+        if(invalidNeighbour.contains(ControlUtils.lastSign(txtFlow)) && minusCanBeAfterLeftPar) {
             return; 
         }
-        buttonInput(event);
+        ControlUtils.buttonInput(event, txtFlow);
     }
 
     @FXML
     private void clickDotBtn(ActionEvent event) {
         final String invalidNeighbour = "+-×÷^()𝑖.", endoOfNumberSign = "+-×÷^(";
         boolean hasDotFlag = false;
-        int idOfLastTextNode = txtFlow.getChildren().size() - 1;
 
-        String neighbour = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
-        if(idOfLastTextNode < 0 || invalidNeighbour.contains(neighbour)) {
+        if(ControlUtils.lastTextId(txtFlow) < 0 || invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
             return;
         }
 
-        int i=idOfLastTextNode; 
+        int i = ControlUtils.lastTextId(txtFlow); 
         String signToChceck = ((Text)(txtFlow.getChildren().get(i))).getText(); 
         while(i >= 0 && !endoOfNumberSign.contains(signToChceck)) {
             signToChceck = ((Text)(txtFlow.getChildren().get(i))).getText(); 
@@ -109,20 +95,18 @@ public class Controller {
             return;
         }
 
-        buttonInput(event);
+        ControlUtils.buttonInput(event, txtFlow);
     }
 
     @FXML
     private void clickImgBtn(ActionEvent event) {
         final String invalidNeighbour = "^)."; 
-        int idOfLastTextNode = txtFlow.getChildren().size() - 1;
-        if(idOfLastTextNode >= 0) {
-            String lastSign = ((Text)(txtFlow.getChildren().get(idOfLastTextNode))).getText();
-            if(invalidNeighbour.contains(lastSign)) {
+        if(ControlUtils.lastTextId(txtFlow) >= 0) {
+            if(invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
                 return;
             }
         }
-        buttonInput(event);
+        ControlUtils.buttonInput(event, txtFlow);
     }
 
     @FXML
@@ -138,8 +122,25 @@ public class Controller {
     }
 
     @FXML
-    private void clickParenthisisBtn(ActionEvent event) {
-        buttonInput(event);
-        //TODO: finish
+    private void clickLeftParenthisisBtn(ActionEvent event) {//FIXME: check if everything id ok
+        if(ControlUtils.lastTextId(txtFlow) < 0) {
+            ControlUtils.buttonInput(event, txtFlow);
+            return;
+        }
+
+        final String validNeighbour = "^+-(.×÷"; 
+        if(validNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+            ControlUtils.buttonInput(event, txtFlow);
+        }
+    }
+
+    @FXML
+    private void clickRightParenthisisBtn(ActionEvent event) {
+        final String invalidNeighbour = "^+-(.×÷"; 
+        if(ControlUtils.lastTextId(txtFlow) < 1 || invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+            return;
+        }
+        
+        ControlUtils.buttonInput(event, txtFlow);
     }
 }
