@@ -71,22 +71,31 @@ public class ComplexNumber {
             throw new ArithmeticException("Division by zero!"); 
         }
 
-        double otherLengthSquared = other.real * other.real + other.imaginary * other.imaginary; 
+        double otherLength = other.real * other.real + other.imaginary * other.imaginary; 
 
-        double resultReal = (this.real * other.real + this.imaginary * other.imaginary) / otherLengthSquared; 
-        double resultImaginary = (other.real * this.imaginary - this.real * other.imaginary) / otherLengthSquared; 
+        double resultReal = (this.real * other.real + this.imaginary * other.imaginary) / otherLength; 
+        double resultImaginary = (other.real * this.imaginary - this.real * other.imaginary) / otherLength; 
 
         return new ComplexNumber(resultReal, resultImaginary); 
     }
 
     public ComplexNumber powerOf(ComplexNumber other) throws ArithmeticException {
-        if(other.imaginary != 0 || other.real % 1 != 0) {//add rooting real numbers
+        if(other.imaginary != 0) {
             throw new ArithmeticException();
         }
 
+        if(other.real % 1 != 0) {
+            if(this.imaginary != 0 ) {
+                throw new ArithmeticException();
+            }
+
+            return new ComplexNumber(Math.pow(this.real, other.real), 0);
+        }
+
         ComplexNumber answer = new ComplexNumber(1, 0); 
+        ComplexNumber factor = other.real > 0 ? this : new ComplexNumber(1, 0).divide(this);
         for(int i=1; i <= other.real; i++) {
-            answer = answer.multiply(this); 
+            answer = answer.multiply(factor); 
         }
 
         return answer;

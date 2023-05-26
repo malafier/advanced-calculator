@@ -3,6 +3,7 @@ package pl.edu.pw.ee;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -10,6 +11,15 @@ import pl.edu.pw.ee.calculations.Calculator;
 import pl.edu.pw.ee.calculations.ComplexNumber;
 
 public class Controller {
+    @FXML 
+    Button btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven, btnEight, btnNine, btnComma, btnImg;
+    
+    @FXML
+    Button btnEquals, btnPlus, btnMinus, btnTimes, btnDiv, btnPower;
+
+    @FXML
+    Button btnDel, btnC, btnAns, btnRightPar, btnLeftPar;
+
     @FXML
     TextFlow txtFlow;
 
@@ -142,5 +152,128 @@ public class Controller {
         }
         
         ControlUtils.buttonInput(event, txtFlow);
+    }
+
+    @FXML
+    private void handleOnKeyPressed(KeyEvent event) {
+        switch(event.getCode()) {
+            //upper bar and numpad
+            case DIGIT1:
+            case NUMPAD1:
+                btnOne.fire();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+                btnTwo.fire();
+                break;
+            case DIGIT3:
+            case NUMPAD3:
+                btnThree.fire();
+                break;
+            case DIGIT4:
+            case NUMPAD4:
+                btnFour.fire();
+                break;
+            case DIGIT5:
+            case NUMPAD5:
+                btnFive.fire();
+                break;
+            case DIGIT6:
+                if(event.isShiftDown()) {
+                    btnPower.fire();
+                } else {
+                    btnSix.fire();
+                }
+                break;
+            case NUMPAD6:
+                btnSix.fire();
+                break;
+            case DIGIT7:
+            case NUMPAD7:
+                btnSeven.fire();
+                break;
+            case DIGIT8:
+                if(event.isShiftDown()) {
+                    btnTimes.fire();
+                } else {
+                    btnEight.fire();
+                }
+                break;
+            case NUMPAD8:
+                btnEight.fire();
+                break;
+            case DIGIT9:
+                if(event.isShiftDown()) {
+                    btnLeftPar.fire();
+                } else {
+                    btnNine.fire();
+                }
+                break;
+            case NUMPAD9:
+                btnNine.fire();
+                break;
+            case DIGIT0:
+                if(event.isShiftDown()) {
+                    btnRightPar.fire();
+                } else {
+                    btnZero.fire();
+                }
+                break;
+            case NUMPAD0: 
+                btnZero.fire();
+                break;
+            
+            case MINUS:
+                btnMinus.fire();
+                break;
+            case EQUALS:
+                if(event.isShiftDown()) {
+                    btnPlus.fire();
+                } else {
+                    btnEquals.fire();
+                }
+                break;
+            
+            case DECIMAL:
+                btnComma.fire();
+                break;
+            case ADD:
+                btnPlus.fire();
+                break;
+            case MULTIPLY:
+                btnTimes.fire();
+                break;
+            case DIVIDE:
+                btnDiv.fire();
+                break;
+            case SUBTRACT:
+                btnMinus.fire();
+                break; 
+            case SEPARATOR:
+                btnEquals.fire();
+                break;
+
+            //other keys
+            case I:
+                btnImg.fire();
+                break;
+            case A:
+                btnAns.fire();
+                break;
+            case C:
+                btnC.fire();
+                break;
+            case COMMA:
+                btnComma.fire();
+                break;
+            case SLASH:
+                btnDiv.fire();
+                break;
+            case BACK_SPACE:
+                btnDel.fire();
+                break;
+
+            default: break;
+        }
     }
 }

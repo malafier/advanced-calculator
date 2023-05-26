@@ -8,9 +8,8 @@ import java.util.TreeMap;
 public class Calculator {
 
     public static String getAnswer(String input) throws IllegalArgumentException, ArithmeticException {
-        if(!validateInput(input)) {
-            throw new IllegalArgumentException();
-        }
+        input = parenthisise(input);
+        
         input = input.replace("(-", "(0-");
         input = input.replace("×", "*");
         input = input.replace("÷", "/");
@@ -91,23 +90,22 @@ public class Calculator {
         return reversed;
     }
 
-    private static boolean validateInput(String input) {
+    private static String parenthisise(String input) {
         int leftPar = (int) input.chars().filter(c -> c == '(').count();
         int rightPar = (int) input.chars().filter(c -> c == ')').count();
 
-        if(leftPar == rightPar) {
-            return true;
-        }
         if(rightPar > leftPar) {
-            return false; 
+            throw new IllegalArgumentException("Too mant right parenthisis.");
         } 
 
-        StringBuilder sb = new StringBuilder(input); 
-        for(int i=0; i < (leftPar - rightPar); i++) {
-            sb.append(')');
+        if(rightPar < leftPar) {
+            StringBuilder sb = new StringBuilder(input); 
+            for(int i=0; i < (leftPar - rightPar); i++) {
+                sb.append(')');
+            }
+            input = sb.toString();
         }
-        input = sb.toString();
 
-        return true;
+        return input;
     }
 }
