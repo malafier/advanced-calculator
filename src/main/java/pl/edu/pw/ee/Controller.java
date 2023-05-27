@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -24,6 +25,7 @@ public class Controller {
     TextFlow txtFlow;
 
     private ComplexNumber memory;
+    private boolean equalsIsOn = false;
 
     @FXML
     private void clickNumberBtn(ActionEvent event) {
@@ -33,25 +35,36 @@ public class Controller {
                 return;
             }
         }
+
+        if(equalsIsOn == true) {
+            txtFlow.getChildren().clear();
+            equalsIsOn = false;
+        }
+        
         ControlUtils.buttonInput(event, txtFlow);
     }
 
     @FXML
     private void clickDelBtn() {
         if(ControlUtils.lastTextId(txtFlow) >= 0) {
+            if(equalsIsOn == true) {
+                equalsIsOn = false;
+            }
+
             txtFlow.getChildren().remove(ControlUtils.lastTextId(txtFlow)); 
         }
     }
 
     @FXML
     private void clickClearBtn() {
+        equalsIsOn = false;
         txtFlow.getChildren().clear();
         txtFlow.layout();
     }
 
     @FXML
     private void clickEqualsBtn() {
-        if(txtFlow.getChildren().size() - 1 < 0) {
+        if(txtFlow.getChildren().size() - 1 < 0 || equalsIsOn == true) {
             return;
         }
 
@@ -59,17 +72,43 @@ public class Controller {
         for(int i=0; i < txtFlow.getChildren().size(); i++) {
             equasion.append(((Text)(txtFlow.getChildren().get(i))).getText());
         }
-        String result = Calculator.getAnswer(equasion.toString());
-        memory = new ComplexNumber(result);
+        String equasionString = equasion.toString();
 
-        Text text = new Text("\n=" + result); 
-        text.setFont(Font.font("Helvetica", 32));
-        txtFlow.getChildren().add(text); 
-        txtFlow.layout();
+        if(equasionString.contains("Ans")) {
+            equasionString = equasionString.replace("Ans", "(" + memory.toString() + ")");
+        }
+
+        equalsIsOn = true;
+
+        try {
+            String result = Calculator.getAnswer(equasionString);
+            memory = new ComplexNumber(result);
+            
+            Text text = new Text("\n=" + result.replace("i", "𝑖"));
+            text.setFont(Font.font("Helvetica", 32));
+            txtFlow.getChildren().add(text); 
+            txtFlow.layout();
+        } catch(ArithmeticException e) {
+            memory = new ComplexNumber("0");
+
+            Text text = new Text("\nMATH ERROR");
+            text.setFont(Font.font("Helvetica", 32));
+            text.setFill(Color.RED);
+            txtFlow.getChildren().add(text); 
+            txtFlow.layout();
+        } catch(IllegalArgumentException e) {
+            memory = new ComplexNumber("0");
+
+            Text text = new Text("\nINVALID SYNTAX");
+            text.setFont(Font.font("Helvetica", 32));
+            text.setFill(Color.RED);
+            txtFlow.getChildren().add(text); 
+            txtFlow.layout();
+        }
     }
 
     @FXML
-    private void clickOperandBtn(ActionEvent event) {//TODO: Ans
+    private void clickOperandBtn(ActionEvent event) {
         final String invalidNeighbour = "+-×÷^(.";
         if(ControlUtils.lastTextId(txtFlow) < 0) {
             return;
@@ -77,6 +116,14 @@ public class Controller {
         boolean minusCanBeAfterLeftPar = !(((Button)event.getSource()).getText().equals("-") && ControlUtils.lastSign(txtFlow).equals("("));
         if(invalidNeighbour.contains(ControlUtils.lastSign(txtFlow)) && minusCanBeAfterLeftPar) {
             return; 
+        }
+
+        if(equalsIsOn == true) {
+            txtFlow.getChildren().clear();
+            Text text = new Text("Ans"); 
+            text.setFont(Font.font("Helvetica", 32));
+            txtFlow.getChildren().add(text);
+            equalsIsOn = false;
         }
         ControlUtils.buttonInput(event, txtFlow);
     }
@@ -87,6 +134,10 @@ public class Controller {
         boolean hasDotFlag = false;
 
         if(ControlUtils.lastTextId(txtFlow) < 0 || invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+            return;
+        }
+
+        if(equalsIsOn == true) {
             return;
         }
 
@@ -116,23 +167,42 @@ public class Controller {
                 return;
             }
         }
+
+        if(equalsIsOn == true) {
+            txtFlow.getChildren().clear();
+            equalsIsOn = false;
+        }
+
         ControlUtils.buttonInput(event, txtFlow);
     }
 
     @FXML
     private void clickAnswerBtn(ActionEvent event) {
-        if(memory == null || memory.toString().equals("0")) {
+        if(memory == null || memory.toString().equals("0") || !ControlUtils.hasLessThan17Signs(txtFlow)) {
             return;
         }
 
-        Text text = new Text(memory.toString()); 
-        text.setFont(Font.font("Helvetica", 32));
-        txtFlow.getChildren().add(text); 
-        txtFlow.layout();
+        if(equalsIsOn == true) {
+            txtFlow.getChildren().clear();
+            equalsIsOn = false;
+        }
+
+        final String validNeighbour = "+-*/^";
+        if(validNeighbour.contains(ControlUtils.lastSign(txtFlow)) || ControlUtils.lastTextId(txtFlow) < 0) {
+            Text text = new Text("Ans"); 
+            text.setFont(Font.font("Helvetica", 32));
+            txtFlow.getChildren().add(text); 
+            txtFlow.layout();
+        }
     }
 
     @FXML
-    private void clickLeftParenthisisBtn(ActionEvent event) {//FIXME: check if everything id ok
+    private void clickLeftParenthisisBtn(ActionEvent event) {
+        if(equalsIsOn == true) {
+            txtFlow.getChildren().clear();
+            equalsIsOn = false;
+        }
+
         if(ControlUtils.lastTextId(txtFlow) < 0) {
             ControlUtils.buttonInput(event, txtFlow);
             return;
@@ -148,6 +218,10 @@ public class Controller {
     private void clickRightParenthisisBtn(ActionEvent event) {
         final String invalidNeighbour = "^+-(.×÷"; 
         if(ControlUtils.lastTextId(txtFlow) < 1 || invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+            return;
+        }
+
+        if(equalsIsOn == true) {
             return;
         }
         

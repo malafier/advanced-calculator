@@ -22,7 +22,7 @@ public class ComplexNumber {
     private void parseSinglePart(String s) {
         if (s.endsWith("i")) { // imaginary 
             real = 0;
-            imaginary = Double.parseDouble(s.substring(0, s.length() - 1));
+            imaginary = parseImaginary(s);
         } else { // real 
             real = Double.parseDouble(s);
             imaginary = 0;
@@ -31,7 +31,14 @@ public class ComplexNumber {
     
     private void parseRealAndImaginary(String realPart, String imaginaryPart) {
         real = Double.parseDouble(realPart);
-        imaginary = Double.parseDouble(imaginaryPart.substring(0, imaginaryPart.length() - 1));
+        imaginary = parseImaginary(imaginaryPart);
+    }
+
+    private double parseImaginary(String s) {
+        if(s.length() == 1) {
+            return 1;
+        }
+        return Double.parseDouble(s.substring(0, s.length() - 1));
     }
 
     public ComplexNumber performOperation(ComplexNumber other, String operator) throws ArithmeticException {
@@ -112,7 +119,7 @@ public class ComplexNumber {
             if (real % 1 == 0) {
                 sb.append((int) real);
             } else {
-                sb.append(real);
+                sb.append(roundToFourDecimals(real));
             }
         }
 
@@ -122,13 +129,23 @@ public class ComplexNumber {
             }
             double absImaginary = Math.abs(imaginary);
             if (absImaginary % 1 == 0) {
-                sb.append((int) absImaginary);
+                if(absImaginary != 1) {
+                    sb.append((int) absImaginary);
+                }
             } else {
-                sb.append(absImaginary);
+                sb.append(roundToFourDecimals(absImaginary));
             }
             sb.append("i");
         }
 
         return sb.toString();
+    }
+
+    private double roundToFourDecimals(double value) {
+        double roundedValue = Math.round(value * 10000) / 10000.0;
+        if (Math.abs(roundedValue) % 1.0 == 0.0) {
+            return (int) roundedValue;
+        }
+        return roundedValue;
     }
 }

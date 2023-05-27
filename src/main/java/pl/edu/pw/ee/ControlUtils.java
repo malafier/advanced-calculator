@@ -7,6 +7,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 public class ControlUtils {
+    private static final int MAX_SIGNS_IN_LINE = 20; 
+
     public static int lastTextId(TextFlow txtFlow) {
         return txtFlow.getChildren().size() - 1;
     }
@@ -16,10 +18,30 @@ public class ControlUtils {
     }
 
     public static void buttonInput(ActionEvent event, TextFlow txtFlow) {
+        if(!hasLessThan20Signs(txtFlow)) {
+            return;
+        }
+
         Button buttonClicked = (Button) event.getSource(); 
         Text text = new Text(buttonClicked.getText()); 
         text.setFont(Font.font("Helvetica", 32));
         txtFlow.getChildren().add(text); 
         txtFlow.layout();
+    }
+
+    private static boolean hasLessThan20Signs(TextFlow txtFlow) {
+        StringBuilder equasion = new StringBuilder(); 
+        for(int i=0; i < txtFlow.getChildren().size(); i++) {
+            equasion.append(((Text)(txtFlow.getChildren().get(i))).getText());
+        }
+        return equasion.toString().length() < MAX_SIGNS_IN_LINE;
+    }
+
+    public static boolean hasLessThan17Signs(TextFlow txtFlow) {
+        StringBuilder equasion = new StringBuilder(); 
+        for(int i=0; i < txtFlow.getChildren().size(); i++) {
+            equasion.append(((Text)(txtFlow.getChildren().get(i))).getText());
+        }
+        return equasion.toString().length() < MAX_SIGNS_IN_LINE - 3;
     }
 }
