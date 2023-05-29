@@ -22,7 +22,7 @@ public class ComplexNumber {
     private void parseSinglePart(String s) {
         if (s.endsWith("i")) { // imaginary 
             real = 0;
-            imaginary = Double.parseDouble(s.substring(0, s.length() - 1));
+            imaginary = parseImaginary(s);
         } else { // real 
             real = Double.parseDouble(s);
             imaginary = 0;
@@ -31,7 +31,14 @@ public class ComplexNumber {
     
     private void parseRealAndImaginary(String realPart, String imaginaryPart) {
         real = Double.parseDouble(realPart);
-        imaginary = Double.parseDouble(imaginaryPart.substring(0, imaginaryPart.length() - 1));
+        imaginary = parseImaginary(imaginaryPart);
+    }
+
+    private double parseImaginary(String s) {
+        if(s.length() == 1) {
+            return 1;
+        }
+        return Double.parseDouble(s.substring(0, s.length() - 1));
     }
 
     public ComplexNumber performOperation(ComplexNumber other, String operator) throws ArithmeticException {
@@ -60,7 +67,7 @@ public class ComplexNumber {
     }
 
     public ComplexNumber multiply(ComplexNumber other) {
-        double resultReal = this.real * other.real + this.imaginary * other.imaginary; 
+        double resultReal = this.real * other.real - this.imaginary * other.imaginary; 
         double resultImaginary = this.real * other.imaginary + other.real * this.imaginary; 
 
         return new ComplexNumber(resultReal, resultImaginary); 
@@ -71,22 +78,31 @@ public class ComplexNumber {
             throw new ArithmeticException("Division by zero!"); 
         }
 
-        double otherLengthSquared = other.real * other.real + other.imaginary * other.imaginary; 
+        double otherLength = other.real * other.real + other.imaginary * other.imaginary; 
 
-        double resultReal = (this.real * other.real + this.imaginary * other.imaginary) / otherLengthSquared; 
-        double resultImaginary = (other.real * this.imaginary - this.real * other.imaginary) / otherLengthSquared; 
+        double resultReal = (this.real * other.real + this.imaginary * other.imaginary) / otherLength; 
+        double resultImaginary = (other.real * this.imaginary - this.real * other.imaginary) / otherLength; 
 
         return new ComplexNumber(resultReal, resultImaginary); 
     }
 
     public ComplexNumber powerOf(ComplexNumber other) throws ArithmeticException {
-        if(other.imaginary != 0 || other.real % 1 != 0) {//add rooting real numbers
+        if(other.imaginary != 0) {
             throw new ArithmeticException();
         }
 
+        if(other.real % 1 != 0) {
+            if(this.imaginary != 0 ) {
+                throw new ArithmeticException();
+            }
+
+            return new ComplexNumber(Math.pow(this.real, other.real), 0);
+        }
+
         ComplexNumber answer = new ComplexNumber(1, 0); 
+        ComplexNumber factor = other.real > 0 ? this : new ComplexNumber(1, 0).divide(this);
         for(int i=1; i <= other.real; i++) {
-            answer = answer.multiply(this); 
+            answer = answer.multiply(factor); 
         }
 
         return answer;
@@ -103,23 +119,33 @@ public class ComplexNumber {
             if (real % 1 == 0) {
                 sb.append((int) real);
             } else {
-                sb.append(real);
+                sb.append(roundToFourDecimals(real));
             }
         }
 
         if (imaginary != 0) {
             if (sb.length() > 0) {
-                sb.append(imaginary < 0 ? " - " : " + ");
+                sb.append(imaginary < 0 ? "-" : "+");
             }
             double absImaginary = Math.abs(imaginary);
             if (absImaginary % 1 == 0) {
-                sb.append((int) absImaginary);
+                if(absImaginary != 1) {
+                    sb.append((int) absImaginary);
+                }
             } else {
-                sb.append(absImaginary);
+                sb.append(roundToFourDecimals(absImaginary));
             }
             sb.append("i");
         }
 
         return sb.toString();
+    }
+
+    private double roundToFourDecimals(double value) {
+        double roundedValue = Math.round(value * 10000) / 10000.0;
+        if (Math.abs(roundedValue) % 1.0 == 0.0) {
+            return (int) roundedValue;
+        }
+        return roundedValue;
     }
 }
