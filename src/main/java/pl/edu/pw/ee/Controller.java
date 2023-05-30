@@ -187,7 +187,7 @@ public class Controller {
             equalsIsOn = false;
         }
 
-        final String validNeighbour = "+-*/^";
+        final String validNeighbour = "+-×/^";
         if(validNeighbour.contains(ControlUtils.lastSign(txtFlow)) || ControlUtils.lastTextId(txtFlow) < 0) {
             Text text = new Text("Ans"); 
             text.setFont(Font.font("Helvetica", 32));
