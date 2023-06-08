@@ -7,13 +7,12 @@ import java.util.TreeMap;
 
 public class Calculator {
 
-    public static String getAnswer(String input) throws IllegalArgumentException, ArithmeticException {
-        input = parenthisise(input);
-        
-        input = input.replace("(-", "(0-");
-        input = input.replace("×", "*");
-        input = input.replace("÷", "/");
-        input = input.replace("𝑖", "i");
+    public static String getAnswer(String input) throws NumberFormatException, IllegalArgumentException, ArithmeticException {
+        input = parenthisise(input)
+            .replace("(-", "(0-")
+            .replace("×", "*")
+            .replace("÷", "/")
+            .replace("𝑖", "i");
 
         Stack<String> reversePolish = shuntingYardParser(input);
         return calculate(reversePolish).toString();
@@ -44,7 +43,8 @@ public class Calculator {
                     operatorStack.pop();
                 } else if(token.equals("(")) {
                     operatorStack.push(token);
-                } else if(operatorStack.empty() || operatorStack.peek().equals("(") || operatorPrecedence.get(operatorStack.peek()) < operatorPrecedence.get(token)) {
+                } else if(operatorStack.empty() || operatorStack.peek().equals("(") || 
+                        operatorPrecedence.get(operatorStack.peek()) < operatorPrecedence.get(token)) {
                     operatorStack.push(token);
                 } else {
                     outputStack.push(operatorStack.pop()); 

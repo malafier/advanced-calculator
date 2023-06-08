@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.calculations;
 
+import java.text.DecimalFormat;
+
 public class ComplexNumber {
     private double real; 
     private double imaginary; 
@@ -9,7 +11,7 @@ public class ComplexNumber {
         this.imaginary = imaginary; 
     }
 
-    public ComplexNumber(String s) {
+    public ComplexNumber(String s) throws NumberFormatException {
         String[] parts = s.split("(?=[+-])"); // split string at + or -
     
         if (parts.length == 1) { // only real or imaginary part
@@ -19,7 +21,11 @@ public class ComplexNumber {
         } 
     }
     
-    private void parseSinglePart(String s) {
+    private void parseSinglePart(String s) throws NumberFormatException {
+        if(s.indexOf('.') > 0 && s.substring(s.indexOf('.')+1, s.length()).length() >= 10) {
+            throw new NumberFormatException();
+        }
+
         if (s.endsWith("i")) { // imaginary 
             real = 0;
             imaginary = parseImaginary(s);
@@ -29,7 +35,7 @@ public class ComplexNumber {
         }
     }
     
-    private void parseRealAndImaginary(String realPart, String imaginaryPart) {
+    private void parseRealAndImaginary(String realPart, String imaginaryPart) throws NumberFormatException {
         real = Double.parseDouble(realPart);
         imaginary = parseImaginary(imaginaryPart);
     }
@@ -110,17 +116,51 @@ public class ComplexNumber {
 
     @Override
     public String toString() {
+        if (real == 0 && imaginary == 0) {
+            return "0";
+        }
+    
+        DecimalFormat decimalFormat = new DecimalFormat("#.##########"); 
+    
+        StringBuilder sb = new StringBuilder();
+        if (real != 0) {
+            String formattedReal = decimalFormat.format(real);
+            if (formattedReal.equals("-0")) {
+                formattedReal = "0"; // Replace negative zero with zero
+            }
+            sb.append(formattedReal);
+        }
+    
+        if (imaginary != 0) {
+            if (sb.length() > 0) {
+                sb.append(imaginary < 0 ? "-" : "+");
+            }
+            double absImaginary = Math.abs(imaginary);
+            if (absImaginary % 1 == 0) {
+                if (absImaginary != 1) {
+                    sb.append((int) absImaginary);
+                }
+            } else {
+                String formattedImaginary = decimalFormat.format(absImaginary);
+                if (formattedImaginary.equals("-0")) {
+                    formattedImaginary = "0"; // Replace negative zero with zero
+                }
+                sb.append(formattedImaginary);
+            }
+            sb.append("i");
+        }
+    
+        return sb.toString();
+    }
+
+    public String toFormatedString() {
         if(real == 0 && imaginary == 0) {
             return "0";
         }
 
         StringBuilder sb = new StringBuilder();
         if (real != 0) {
-            if (real % 1 == 0) {
-                sb.append((int) real);
-            } else {
-                sb.append(roundToFourDecimals(real));
-            }
+            sb.append(outputFormat(real));
         }
 
         if (imaginary != 0) {
@@ -128,24 +168,37 @@ public class ComplexNumber {
                 sb.append(imaginary < 0 ? "-" : "+");
             }
             double absImaginary = Math.abs(imaginary);
-            if (absImaginary % 1 == 0) {
-                if(absImaginary != 1) {
-                    sb.append((int) absImaginary);
-                }
-            } else {
-                sb.append(roundToFourDecimals(absImaginary));
-            }
-            sb.append("i");
+            sb.append(outputFormat(absImaginary) + "i");
         }
 
         return sb.toString();
     }
 
-    private double roundToFourDecimals(double value) {
-        double roundedValue = Math.round(value * 10000) / 10000.0;
-        if (Math.abs(roundedValue) % 1.0 == 0.0) {
-            return (int) roundedValue;
+    private String outputFormat(double value) {
+        if(value >= 10000) { //val too high
+            int e = 0;
+            while(value >= 10) {
+                value /= 10;
+                e++;
+            }
+            double roundedValue = Math.round(value * 10000) / 10000.0; 
+            return Double.toString(roundedValue) + "e" + Integer.toString(e);
+        } 
+
+        if(value < 0.0001) { //val too small
+            int e = 0;
+            while(value < 1) {
+                value *= 10;
+                e--;
+            }
+            double roundedValue = Math.round(value * 10000) / 10000.0; 
+            return Double.toString(roundedValue) + "e" + Integer.toString(e);
         }
-        return roundedValue;
+
+        double roundedValue = Math.round(value * 10000) / 10000.0;
+        if(Math.abs(roundedValue) % 1.0 == 0.0) {
+            return Integer.toString((int) roundedValue);
+        }
+        return Double.toString(roundedValue);
     }
 }

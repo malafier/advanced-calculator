@@ -84,7 +84,8 @@ public class Controller {
             String result = Calculator.getAnswer(equasionString);
             memory = new ComplexNumber(result);
             
-            Text text = new Text("\n=" + result.replace("i", "𝑖"));
+            Text text = new Text("\n=" + memory.toFormatedString()
+                .replace("i", "𝑖"));
             text.setFont(Font.font("Helvetica", 32));
             txtFlow.getChildren().add(text); 
             txtFlow.layout();
@@ -92,6 +93,14 @@ public class Controller {
             memory = new ComplexNumber("0");
 
             Text text = new Text("\nMATH ERROR");
+            text.setFont(Font.font("Helvetica", 32));
+            text.setFill(Color.RED);
+            txtFlow.getChildren().add(text); 
+            txtFlow.layout();
+        } catch(NumberFormatException e) {
+            memory = new ComplexNumber("0");
+
+            Text text = new Text("\nOUT OF RANGE");
             text.setFont(Font.font("Helvetica", 32));
             text.setFill(Color.RED);
             txtFlow.getChildren().add(text); 
