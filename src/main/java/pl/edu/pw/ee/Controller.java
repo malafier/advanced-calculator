@@ -318,6 +318,7 @@ public class Controller {
                 break;
             
             case DECIMAL:
+            case PERIOD:
                 btnComma.fire();
                 break;
             case ADD:
