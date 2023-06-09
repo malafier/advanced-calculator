@@ -3,7 +3,6 @@ package pl.edu.pw.ee.calculations;
 import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
 
 public class Calculator {
 
@@ -20,15 +19,16 @@ public class Calculator {
 
     private static Stack<String> shuntingYardParser(String input) {
         StringTokenizer tokens = new StringTokenizer(input, "+-*/()^", true);
-        Stack<String> operatorStack = new Stack<String>();
-        Stack<String> outputStack = new Stack<String>(); 
+        Stack<String> operatorStack = new Stack<String>(), 
+                      outputStack = new Stack<String>(); 
 
-        Map<String, Integer> operatorPrecedence = new TreeMap<>(); 
-        operatorPrecedence.put("^", 4);
-        operatorPrecedence.put("*", 3);
-        operatorPrecedence.put("/", 3);
-        operatorPrecedence.put("+", 2);
-        operatorPrecedence.put("-", 2);
+        Map<String, Integer> operatorPrecedence = Map.of(
+            "^", 4,
+            "*", 3,
+            "/", 3,
+            "+", 2,
+            "-", 2
+        );
 
         while(tokens.hasMoreTokens()) {
             String token = tokens.nextToken();
