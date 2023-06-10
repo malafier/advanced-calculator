@@ -8,7 +8,8 @@ public class CalculatorTest {
 
     @Test
     public void simpleArithmeticsTest() {
-        String equasion_1 = "2+3", equasion_2 = "3+3+4-5", equasion_3 = "8+2-15", equasion_4 = "12*2", equasion_5 = "12/2", equasion_6 = "2^5"; 
+        String equasion_1 = "2+3", equasion_2 = "3+3+4-5", equasion_3 = "8+2-15", equasion_4 = "12*2",
+                equasion_5 = "12/2", equasion_6 = "2^5";
         String result_1 = "5", result_2 = "5", result_3 = "-5", result_4 = "24", result_5 = "6", result_6 = "32";
 
         assertEquals(result_1, Calculator.getAnswer(equasion_1));
@@ -40,12 +41,12 @@ public class CalculatorTest {
         assertEquals(result_3, Calculator.getAnswer(equasion_3));
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void tooManyRightPars() {
         Calculator.getAnswer("2-3)");
     }
 
-    @Test (expected = NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void tooManyRightParhs() {
         Calculator.getAnswer("0.00000000000001");
     }

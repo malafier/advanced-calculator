@@ -7,9 +7,9 @@ import org.junit.Test;
 public class ComplexNumberTest {
     @Test
     public void testAdd() {
-        ComplexNumber add_1_1 = new ComplexNumber(2, 0), add_1_2 = new ComplexNumber(6.5, 0); 
-        ComplexNumber add_2_1 = new ComplexNumber(0, 4), add_2_2 = new ComplexNumber(12, 0); 
-        ComplexNumber add_3_1 = new ComplexNumber(21.5, 4), add_3_2 = new ComplexNumber(-15.16, -10.6); 
+        ComplexNumber add_1_1 = new ComplexNumber(2, 0), add_1_2 = new ComplexNumber(6.5, 0);
+        ComplexNumber add_2_1 = new ComplexNumber(0, 4), add_2_2 = new ComplexNumber(12, 0);
+        ComplexNumber add_3_1 = new ComplexNumber(21.5, 4), add_3_2 = new ComplexNumber(-15.16, -10.6);
 
         String result_1 = "8,5", result_2 = "12+4i", result_3 = "6,34-6,6i";
 
@@ -74,10 +74,10 @@ public class ComplexNumberTest {
 
     @Test
     public void testToString() {
-        ComplexNumber testedNumOne = new ComplexNumber(32, 15); 
-        ComplexNumber testedNumTwo = new ComplexNumber(32.15, -15.1212); 
-        ComplexNumber testedNumThree = new ComplexNumber(-32.15, 15.1212); 
-        ComplexNumber testedNumFour = new ComplexNumber(-32.15, -15.1212); 
+        ComplexNumber testedNumOne = new ComplexNumber(32, 15);
+        ComplexNumber testedNumTwo = new ComplexNumber(32.15, -15.1212);
+        ComplexNumber testedNumThree = new ComplexNumber(-32.15, 15.1212);
+        ComplexNumber testedNumFour = new ComplexNumber(-32.15, -15.1212);
 
         String resultOne = "32+15i";
         String resultTwo = "32,15-15,1212i";
@@ -90,18 +90,18 @@ public class ComplexNumberTest {
         assertEquals(resultFour, testedNumFour.toString());
     }
 
-    @Test (expected = ArithmeticException.class)
+    @Test(expected = ArithmeticException.class)
     public void divisionByZero() {
-        new ComplexNumber(1,1).divide(new ComplexNumber(0, 0));
+        new ComplexNumber(1, 1).divide(new ComplexNumber(0, 0));
     }
 
-    @Test (expected = ArithmeticException.class)
+    @Test(expected = ArithmeticException.class)
     public void powerOfImaginary() {
-        new ComplexNumber(1,1).powerOf(new ComplexNumber(0, 1));
+        new ComplexNumber(1, 1).powerOf(new ComplexNumber(0, 1));
     }
 
-    @Test (expected = ArithmeticException.class)
+    @Test(expected = ArithmeticException.class)
     public void rootedImaginary() {
-        new ComplexNumber(1,1).powerOf(new ComplexNumber(2.5, 0));
+        new ComplexNumber(1, 1).powerOf(new ComplexNumber(2.5, 0));
     }
 }

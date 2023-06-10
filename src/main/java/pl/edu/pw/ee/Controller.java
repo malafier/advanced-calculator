@@ -12,9 +12,9 @@ import pl.edu.pw.ee.calculations.Calculator;
 import pl.edu.pw.ee.calculations.ComplexNumber;
 
 public class Controller {
-    @FXML 
+    @FXML
     Button btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven, btnEight, btnNine, btnComma, btnImg;
-    
+
     @FXML
     Button btnEquals, btnPlus, btnMinus, btnTimes, btnDiv, btnPower;
 
@@ -30,28 +30,28 @@ public class Controller {
     @FXML
     private void clickNumberBtn(ActionEvent event) {
         final String invalidNeighbour = ")𝑖";
-        if(ControlUtils.lastTextId(txtFlow) >= 0) {
-            if(invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+        if (ControlUtils.lastTextId(txtFlow) >= 0) {
+            if (invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
                 return;
             }
         }
 
-        if(equalsIsOn == true) {
+        if (equalsIsOn == true) {
             txtFlow.getChildren().clear();
             equalsIsOn = false;
         }
-        
+
         ControlUtils.buttonInput(event, txtFlow);
     }
 
     @FXML
     private void clickDelBtn() {
-        if(ControlUtils.lastTextId(txtFlow) >= 0) {
-            if(equalsIsOn == true) {
+        if (ControlUtils.lastTextId(txtFlow) >= 0) {
+            if (equalsIsOn == true) {
                 equalsIsOn = false;
             }
 
-            txtFlow.getChildren().remove(ControlUtils.lastTextId(txtFlow)); 
+            txtFlow.getChildren().remove(ControlUtils.lastTextId(txtFlow));
         }
     }
 
@@ -64,17 +64,17 @@ public class Controller {
 
     @FXML
     private void clickEqualsBtn() {
-        if(txtFlow.getChildren().size() - 1 < 0 || equalsIsOn == true) {
+        if (txtFlow.getChildren().size() - 1 < 0 || equalsIsOn == true) {
             return;
         }
 
-        StringBuilder equasion = new StringBuilder(); 
-        for(int i=0; i < txtFlow.getChildren().size(); i++) {
-            equasion.append(((Text)(txtFlow.getChildren().get(i))).getText());
+        StringBuilder equasion = new StringBuilder();
+        for (int i = 0; i < txtFlow.getChildren().size(); i++) {
+            equasion.append(((Text) (txtFlow.getChildren().get(i))).getText());
         }
         String equasionString = equasion.toString();
 
-        if(equasionString.contains("Ans")) {
+        if (equasionString.contains("Ans")) {
             equasionString = equasionString.replace("Ans", "(" + memory.toString() + ")");
         }
 
@@ -83,35 +83,35 @@ public class Controller {
         try {
             String result = Calculator.getAnswer(equasionString);
             memory = new ComplexNumber(result);
-            
+
             Text text = new Text("\n=" + memory.toFormatedString()
-                .replace("i", "𝑖"));
+                    .replace("i", "𝑖"));
             text.setFont(Font.font("Helvetica", 32));
-            txtFlow.getChildren().add(text); 
+            txtFlow.getChildren().add(text);
             txtFlow.layout();
-        } catch(ArithmeticException e) {
+        } catch (ArithmeticException e) {
             memory = new ComplexNumber("0");
 
             Text text = new Text("\nMATH ERROR");
             text.setFont(Font.font("Helvetica", 32));
             text.setFill(Color.RED);
-            txtFlow.getChildren().add(text); 
+            txtFlow.getChildren().add(text);
             txtFlow.layout();
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             memory = new ComplexNumber("0");
 
             Text text = new Text("\nOUT OF RANGE");
             text.setFont(Font.font("Helvetica", 32));
             text.setFill(Color.RED);
-            txtFlow.getChildren().add(text); 
+            txtFlow.getChildren().add(text);
             txtFlow.layout();
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             memory = new ComplexNumber("0");
 
             Text text = new Text("\nINVALID SYNTAX");
             text.setFont(Font.font("Helvetica", 32));
             text.setFill(Color.RED);
-            txtFlow.getChildren().add(text); 
+            txtFlow.getChildren().add(text);
             txtFlow.layout();
         }
     }
@@ -119,17 +119,18 @@ public class Controller {
     @FXML
     private void clickOperandBtn(ActionEvent event) {
         final String invalidNeighbour = "+-×÷^(.";
-        if(ControlUtils.lastTextId(txtFlow) < 0) {
+        if (ControlUtils.lastTextId(txtFlow) < 0) {
             return;
         }
-        boolean minusCanBeAfterLeftPar = !(((Button)event.getSource()).getText().equals("-") && ControlUtils.lastSign(txtFlow).equals("("));
-        if(invalidNeighbour.contains(ControlUtils.lastSign(txtFlow)) && minusCanBeAfterLeftPar) {
-            return; 
+        boolean minusCanBeAfterLeftPar = !(((Button) event.getSource()).getText().equals("-")
+                && ControlUtils.lastSign(txtFlow).equals("("));
+        if (invalidNeighbour.contains(ControlUtils.lastSign(txtFlow)) && minusCanBeAfterLeftPar) {
+            return;
         }
 
-        if(equalsIsOn == true) {
+        if (equalsIsOn == true) {
             txtFlow.getChildren().clear();
-            Text text = new Text("Ans"); 
+            Text text = new Text("Ans");
             text.setFont(Font.font("Helvetica", 32));
             txtFlow.getChildren().add(text);
             equalsIsOn = false;
@@ -142,26 +143,26 @@ public class Controller {
         final String invalidNeighbour = "+-×÷^()𝑖.", endoOfNumberSign = "+-×÷^(";
         boolean hasDotFlag = false;
 
-        if(ControlUtils.lastTextId(txtFlow) < 0 || invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+        if (ControlUtils.lastTextId(txtFlow) < 0 || invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
             return;
         }
 
-        if(equalsIsOn == true) {
+        if (equalsIsOn == true) {
             return;
         }
 
-        int i = ControlUtils.lastTextId(txtFlow); 
-        String signToChceck = ((Text)(txtFlow.getChildren().get(i))).getText(); 
-        while(i >= 0 && !endoOfNumberSign.contains(signToChceck)) {
-            signToChceck = ((Text)(txtFlow.getChildren().get(i))).getText(); 
-            if(signToChceck.equals(".")) {
-                hasDotFlag = true; 
+        int i = ControlUtils.lastTextId(txtFlow);
+        String signToChceck = ((Text) (txtFlow.getChildren().get(i))).getText();
+        while (i >= 0 && !endoOfNumberSign.contains(signToChceck)) {
+            signToChceck = ((Text) (txtFlow.getChildren().get(i))).getText();
+            if (signToChceck.equals(".")) {
+                hasDotFlag = true;
                 break;
             }
             i--;
         }
 
-        if(hasDotFlag) {
+        if (hasDotFlag) {
             return;
         }
 
@@ -170,14 +171,14 @@ public class Controller {
 
     @FXML
     private void clickImgBtn(ActionEvent event) {
-        final String invalidNeighbour = "^)."; 
-        if(ControlUtils.lastTextId(txtFlow) >= 0) {
-            if(invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+        final String invalidNeighbour = "^).";
+        if (ControlUtils.lastTextId(txtFlow) >= 0) {
+            if (invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
                 return;
             }
         }
 
-        if(equalsIsOn == true) {
+        if (equalsIsOn == true) {
             txtFlow.getChildren().clear();
             equalsIsOn = false;
         }
@@ -187,60 +188,60 @@ public class Controller {
 
     @FXML
     private void clickAnswerBtn(ActionEvent event) {
-        if(memory == null || memory.toString().equals("0") || !ControlUtils.hasLessThan17Signs(txtFlow)) {
+        if (memory == null || memory.toString().equals("0") || !ControlUtils.hasLessThan17Signs(txtFlow)) {
             return;
         }
 
-        if(equalsIsOn == true) {
+        if (equalsIsOn == true) {
             txtFlow.getChildren().clear();
             equalsIsOn = false;
         }
 
         final String validNeighbour = "+-×/^";
-        if(validNeighbour.contains(ControlUtils.lastSign(txtFlow)) || ControlUtils.lastTextId(txtFlow) < 0) {
-            Text text = new Text("Ans"); 
+        if (validNeighbour.contains(ControlUtils.lastSign(txtFlow)) || ControlUtils.lastTextId(txtFlow) < 0) {
+            Text text = new Text("Ans");
             text.setFont(Font.font("Helvetica", 32));
-            txtFlow.getChildren().add(text); 
+            txtFlow.getChildren().add(text);
             txtFlow.layout();
         }
     }
 
     @FXML
     private void clickLeftParenthisisBtn(ActionEvent event) {
-        if(equalsIsOn == true) {
+        if (equalsIsOn == true) {
             txtFlow.getChildren().clear();
             equalsIsOn = false;
         }
 
-        if(ControlUtils.lastTextId(txtFlow) < 0) {
+        if (ControlUtils.lastTextId(txtFlow) < 0) {
             ControlUtils.buttonInput(event, txtFlow);
             return;
         }
 
-        final String validNeighbour = "^+-(.×÷"; 
-        if(validNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+        final String validNeighbour = "^+-(.×÷";
+        if (validNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
             ControlUtils.buttonInput(event, txtFlow);
         }
     }
 
     @FXML
     private void clickRightParenthisisBtn(ActionEvent event) {
-        final String invalidNeighbour = "^+-(.×÷"; 
-        if(ControlUtils.lastTextId(txtFlow) < 1 || invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
+        final String invalidNeighbour = "^+-(.×÷";
+        if (ControlUtils.lastTextId(txtFlow) < 1 || invalidNeighbour.contains(ControlUtils.lastSign(txtFlow))) {
             return;
         }
 
-        if(equalsIsOn == true) {
+        if (equalsIsOn == true) {
             return;
         }
-        
+
         ControlUtils.buttonInput(event, txtFlow);
     }
 
     @FXML
     private void handleOnKeyPressed(KeyEvent event) {
-        switch(event.getCode()) {
-            //upper bar and numpad
+        switch (event.getCode()) {
+            // upper bar and numpad
             case DIGIT1:
             case NUMPAD1:
                 btnOne.fire();
@@ -262,7 +263,7 @@ public class Controller {
                 btnFive.fire();
                 break;
             case DIGIT6:
-                if(event.isShiftDown()) {
+                if (event.isShiftDown()) {
                     btnPower.fire();
                 } else {
                     btnSix.fire();
@@ -276,7 +277,7 @@ public class Controller {
                 btnSeven.fire();
                 break;
             case DIGIT8:
-                if(event.isShiftDown()) {
+                if (event.isShiftDown()) {
                     btnTimes.fire();
                 } else {
                     btnEight.fire();
@@ -286,7 +287,7 @@ public class Controller {
                 btnEight.fire();
                 break;
             case DIGIT9:
-                if(event.isShiftDown()) {
+                if (event.isShiftDown()) {
                     btnLeftPar.fire();
                 } else {
                     btnNine.fire();
@@ -296,27 +297,27 @@ public class Controller {
                 btnNine.fire();
                 break;
             case DIGIT0:
-                if(event.isShiftDown()) {
+                if (event.isShiftDown()) {
                     btnRightPar.fire();
                 } else {
                     btnZero.fire();
                 }
                 break;
-            case NUMPAD0: 
+            case NUMPAD0:
                 btnZero.fire();
                 break;
-            
+
             case MINUS:
                 btnMinus.fire();
                 break;
             case EQUALS:
-                if(event.isShiftDown()) {
+                if (event.isShiftDown()) {
                     btnPlus.fire();
                 } else {
                     btnEquals.fire();
                 }
                 break;
-            
+
             case DECIMAL:
             case PERIOD:
                 btnComma.fire();
@@ -332,12 +333,12 @@ public class Controller {
                 break;
             case SUBTRACT:
                 btnMinus.fire();
-                break; 
+                break;
             case SEPARATOR:
                 btnEquals.fire();
                 break;
 
-            //other keys
+            // other keys
             case I:
                 btnImg.fire();
                 break;
@@ -357,7 +358,8 @@ public class Controller {
                 btnDel.fire();
                 break;
 
-            default: break;
+            default:
+                break;
         }
     }
 }
