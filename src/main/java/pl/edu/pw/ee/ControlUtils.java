@@ -57,7 +57,7 @@ public class ControlUtils {
 
         int i = ControlUtils.lastTextId(txtFlow); 
         String signToChceck = ((Text)(txtFlow.getChildren().get(i))).getText(); 
-        if(signToChceck.equals(".")) {
+        if(signToChceck.equals(".") || endoOfNumberSign.contains(signToChceck)) {
             return false;
         }
 

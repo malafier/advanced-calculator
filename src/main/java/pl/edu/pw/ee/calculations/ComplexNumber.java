@@ -6,13 +6,16 @@ public class ComplexNumber {
     private double real; 
     private double imaginary; 
 
+    private static final int MAX_DECIMAL_INPUT = 10;
+
     public ComplexNumber(double real, double imaginary) {
         this.real = real; 
         this.imaginary = imaginary; 
     }
 
     public ComplexNumber(String s) throws NumberFormatException {
-        String[] parts = s.split("(?=[+-])"); // split string at + or -
+        String[] parts = s.replace(',', '.')
+            .split("(?=[+-])"); // split string at + or -
     
         if (parts.length == 1) { // only real or imaginary part
             parseSinglePart(parts[0]);
@@ -22,7 +25,11 @@ public class ComplexNumber {
     }
     
     private void parseSinglePart(String s) throws NumberFormatException {
-        if(s.indexOf('.') > 0 && s.substring(s.indexOf('.')+1, s.length()).length() >= 10) {
+        if (s.startsWith("0") && !s.equals("0")) {
+            s = s.substring(1); // Remove the leading zero
+        }
+
+        if(isOutOfRange(s)) {
             throw new NumberFormatException();
         }
 
@@ -33,6 +40,10 @@ public class ComplexNumber {
             real = Double.parseDouble(s);
             imaginary = 0;
         }
+    }
+
+    private boolean isOutOfRange(String s) {
+        return s.indexOf('.') >= 0 && s.substring(s.indexOf('.')+1, s.length()).length() > MAX_DECIMAL_INPUT;
     }
     
     private void parseRealAndImaginary(String realPart, String imaginaryPart) throws NumberFormatException {
@@ -106,8 +117,8 @@ public class ComplexNumber {
         }
 
         ComplexNumber answer = new ComplexNumber(1, 0); 
-        ComplexNumber factor = other.real > 0 ? this : new ComplexNumber(1, 0).divide(this);
-        for(int i=1; i <= other.real; i++) {
+        ComplexNumber factor = other.real >= 0 ? this : new ComplexNumber(1, 0).divide(this);
+        for(int i=1; i <= Math.abs(other.real); i++) {
             answer = answer.multiply(factor); 
         }
 
@@ -126,7 +137,7 @@ public class ComplexNumber {
         if (real != 0) {
             String formattedReal = decimalFormat.format(real);
             if (formattedReal.equals("-0")) {
-                formattedReal = "0"; // Replace negative zero with zero
+                formattedReal = "0"; 
             }
             sb.append(formattedReal);
         }
@@ -134,6 +145,8 @@ public class ComplexNumber {
         if (imaginary != 0) {
             if (sb.length() > 0) {
                 sb.append(imaginary < 0 ? "-" : "+");
+            } else if(sb.length() == 0 && imaginary < 0) {
+                sb.append("-");
             }
             double absImaginary = Math.abs(imaginary);
             if (absImaginary % 1 == 0) {
@@ -143,7 +156,7 @@ public class ComplexNumber {
             } else {
                 String formattedImaginary = decimalFormat.format(absImaginary);
                 if (formattedImaginary.equals("-0")) {
-                    formattedImaginary = "0"; // Replace negative zero with zero
+                    formattedImaginary = "0"; 
                 }
                 sb.append(formattedImaginary);
             }

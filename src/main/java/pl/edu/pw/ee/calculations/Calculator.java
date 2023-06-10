@@ -60,7 +60,7 @@ public class Calculator {
         return outputStack;
     }
 
-    private static ComplexNumber calculate(Stack<String> rpn) throws ArithmeticException {
+    private static ComplexNumber calculate(Stack<String> rpn) throws ArithmeticException, IllegalArgumentException {
         rpn = reverseStack(rpn);
         Stack<ComplexNumber> helpingStack = new Stack<>(); 
 

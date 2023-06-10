@@ -29,4 +29,24 @@ public class CalculatorTest {
         assertEquals(result_3, Calculator.getAnswer(equasion_3));
         assertEquals(result_4, Calculator.getAnswer(equasion_4));
     }
+
+    @Test
+    public void complexArithmetics() {
+        String equasion_1 = "2+2*2", equasion_2 = "(2+2i)*(3-5i)", equasion_3 = "4i+(2+2i)^(-2)";
+        String result_1 = "6", result_2 = "16-4i", result_3 = "3,875i";
+
+        assertEquals(result_1, Calculator.getAnswer(equasion_1));
+        assertEquals(result_2, Calculator.getAnswer(equasion_2));
+        assertEquals(result_3, Calculator.getAnswer(equasion_3));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void tooManyRightPars() {
+        Calculator.getAnswer("2-3)");
+    }
+
+    @Test (expected = NumberFormatException.class)
+    public void tooManyRightParhs() {
+        Calculator.getAnswer("0.00000000000001");
+    }
 }
