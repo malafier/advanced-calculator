@@ -7,7 +7,7 @@ Operations performed:
 - Division
 - Exponentiation *
 
-\* when it comes to non-integer numbers oeration can be only performed on number without imaginary part.
+\* when it comes to non-integer numbers operation can be only performed on number without imaginary part.
 
 ## Additional information
 Numbers are limited to width of 20 (input box width). 
